@@ -1,7 +1,7 @@
 package main
 
 import (
-	v1 "bc_hw3/api/v1"
+	v1 "go_kivik_couch_hw3/api/v1"
 	"os"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"

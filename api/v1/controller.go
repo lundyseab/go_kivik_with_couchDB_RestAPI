@@ -3,7 +3,7 @@ package v1
 import (
 	"context"
 	"net/http"
-	database "bc_hw3/initialize"
+	database "go_kivik_couch_hw3/initialize"
 	"github.com/gin-gonic/gin"
 )
 

@@ -1,4 +1,4 @@
-module bc_hw3
+module go_kivik_couch_hw3
 
 go 1.21.0
 
