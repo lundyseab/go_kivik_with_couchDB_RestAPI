@@ -1,4 +1,4 @@
-module go_kivik_couch_hw3
+module github.com/lundyseab/go_kivik_with_couchDB_RestAPI
 
 go 1.21.0
 

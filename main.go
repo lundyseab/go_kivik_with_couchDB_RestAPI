@@ -1,7 +1,7 @@
 package main
 
 import (
-	v1 "go_kivik_couch_hw3/api/v1"
+	v1 "github.com/lundyseab/go_kivik_with_couchDB_RestAPI/api/v1"
 	"os"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -18,6 +18,8 @@ func main() {
 
 	// create group 
 	router := r.Group("/api/v1")
+
+	//add new student
 	router.POST("/insertDoc", v1.InsertDoc)
 
 	r.Run("localhost:"+os.Getenv("PORT"))

@@ -3,7 +3,7 @@ package v1
 import (
 	"context"
 	"net/http"
-	database "go_kivik_couch_hw3/initialize"
+	database "github.com/lundyseab/go_kivik_with_couchDB_RestAPI/initialize"
 	"github.com/gin-gonic/gin"
 )
 
