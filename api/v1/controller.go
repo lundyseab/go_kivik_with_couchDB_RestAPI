@@ -3,34 +3,32 @@ package v1
 import (
 	"context"
 	"net/http"
-	database "github.com/lundyseab/go_kivik_with_couchDB_RestAPI/initialize"
+
 	"github.com/gin-gonic/gin"
+	database "github.com/lundyseab/go_kivik_with_couchDB_RestAPI/initialize"
+	"github.com/lundyseab/go_kivik_with_couchDB_RestAPI/models"
 )
 
-
-type newDoc struct {
-	Name string `json:"name"`
-	Age   int    `json:"age"`
-}
 
 func InsertDoc(ctx *gin.Context) {
 
 	// ---------------------------
-	var doc newDoc
+	var student models.Student
 
-	if err := ctx.BindJSON(&doc); err != nil {
+	if err := ctx.BindJSON(&student); err != nil {
 		return
 	}
 
-	docID, rev, err := database.DB.CreateDoc(context.TODO(), &doc)
+	docID, rev, err := database.DB.CreateDoc(context.TODO(), &student)
 	if err != nil {
 		panic(err)
 	}
 	returnDoc := map[string]interface{}{
 		"docId": docID,
 		"rev":   rev,
-		"name": doc.Name,
-		"age": doc.Age,
+		"name": student.Name,
+		"age": student.Age,
+		"id": student.ID,
 	}
 	ctx.IndentedJSON(http.StatusCreated, returnDoc)
 }
