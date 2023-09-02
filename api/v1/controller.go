@@ -24,6 +24,7 @@ func InsertDoc(ctx *gin.Context) {
 			"status": 200,
 		}
 		ctx.IndentedJSON(http.StatusOK, returnDoc)
+		return
 	}
 
 	docID, rev, err := database.DB.CreateDoc(context.TODO(), &student)
@@ -75,6 +76,7 @@ func UploadFile(c *gin.Context){
 			"status": 200,
 		}
 		c.IndentedJSON(200, returnDoc)
+		return
 	 }  
 	length := len(docs)
 	returnDoc := map[string]interface{}{
@@ -98,6 +100,7 @@ func GetDocumentById(c *gin.Context){
 			"status": 200,
 		}
 		c.IndentedJSON(200, returnDoc)
+		return
 	}
 	returnDoc := map[string]interface{}{
 		"id" : id,
@@ -122,6 +125,7 @@ func GetFileWithID(c *gin.Context){
 			"status": 200,
 		}
 		c.IndentedJSON(200, returnDoc)
+		return
 	}
 	
 	// Decode data
@@ -132,6 +136,7 @@ func GetFileWithID(c *gin.Context){
 			"status": 200,
 		}
 		c.IndentedJSON(200, returnDoc)
+		return
 	}
 
 	 // Set headers for download back with original filename
@@ -153,6 +158,7 @@ func UpdateDocumentByIdAndRev(c *gin.Context){
 				"status": 200,
 			}
 			c.IndentedJSON(http.StatusOK, returnDoc)
+			return
 		}
 	  
 		// Update document using Update()
@@ -163,6 +169,7 @@ func UpdateDocumentByIdAndRev(c *gin.Context){
 				"status": 200,
 			}
 			c.IndentedJSON(http.StatusOK, returnDoc)
+			return
 		}
 		student.Rev = rev
 
@@ -173,10 +180,33 @@ func UpdateDocumentByIdAndRev(c *gin.Context){
 		c.IndentedJSON(http.StatusOK, returnDoc)
 
 }
-// func deleteById(id, rev string) {
-// 	newRev, err := DBCon.Delete(context.TODO(), id, rev)
-// 	if err != nil {
-// 	  panic(err)
-// 	}
-// 	fmt.Printf("The tombstone document has revision %s\n", newRev)
-//   }
+func DeleteDocumentById(c *gin.Context) {
+	id := c.Param("id")
+	var student models.Student
+
+	if err := c.BindJSON(&student); err != nil {
+		returnDoc := map[string]interface{}{
+			"description": "failed",
+			"status": 200,
+		}
+		c.IndentedJSON(http.StatusOK, returnDoc)
+		return
+	}
+
+	rev := student.Rev
+	newRev, err := database.DB.Delete(context.TODO(), id, rev)
+	if err != nil {
+		returnDoc := map[string]interface{}{
+			"description": "failed to delete student document",
+			"status": 200,
+		}
+		c.IndentedJSON(http.StatusOK, returnDoc)
+		return
+	}
+	returnDoc := map[string]interface{}{
+		"_rev":   newRev,
+		"description": "Document ID: " +id + ", delete successfully",
+		"status": 200,
+	}
+	c.IndentedJSON(http.StatusOK, returnDoc)
+  }

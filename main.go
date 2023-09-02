@@ -35,6 +35,9 @@ func main() {
 	// update document by id and rev 
 	router.PUT("/update_document/:id", v1.UpdateDocumentByIdAndRev)
 
+	//delete document by id and rev
+	router.DELETE("/delete_document/:id", v1.DeleteDocumentById)
+
 	// run server on port from .env
 	r.Run("localhost:"+os.Getenv("PORT"))
 }
