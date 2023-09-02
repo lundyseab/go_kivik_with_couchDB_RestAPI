@@ -16,10 +16,10 @@ func main() {
 	  AllowOrigins: []string{"*"},
 	}))
 	r.MaxMultipartMemory = 1024 * 1024
+
 	// create group
 	router := r.Group("/api/v1")
 
-	
 	//api/v1/...
 	//add new student
 	router.POST("/insert_student_doc", v1.InsertDoc)
@@ -37,6 +37,9 @@ func main() {
 
 	//delete document by id and rev
 	router.DELETE("/delete_document/:id", v1.DeleteDocumentById)
+
+	// design document
+	// router.GET("/design_document/:classroom/:name", v1.DesignDocument)
 
 	// run server on port from .env
 	r.Run("localhost:"+os.Getenv("PORT"))

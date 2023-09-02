@@ -147,6 +147,7 @@ func GetFileWithID(c *gin.Context){
 
 }
 
+// update document with id and rev
 func UpdateDocumentByIdAndRev(c *gin.Context){
 		id := c.Param("id")
 		// Document to update
@@ -180,6 +181,8 @@ func UpdateDocumentByIdAndRev(c *gin.Context){
 		c.IndentedJSON(http.StatusOK, returnDoc)
 
 }
+
+//delete document by id and rev
 func DeleteDocumentById(c *gin.Context) {
 	id := c.Param("id")
 	var student models.Student
@@ -210,3 +213,47 @@ func DeleteDocumentById(c *gin.Context) {
 	}
 	c.IndentedJSON(http.StatusOK, returnDoc)
   }
+
+  // design document
+//   func DesignDocument(c *gin.Context){
+// 	classroom := c.Param("classroom")
+// 	name := c.Param("name")
+//     client := database.DB
+
+// 	var students[] models.Student
+
+// 	// Query by_classroom 
+// 	if classroom != "" {
+// 	  result, err := client.DesignDocs("_design/students").View("by_classroom", map[string]interface{}{
+// 		"classroom": classroom,
+// 		"filter": "classroom",
+// 	  })
+// 	  if err != nil {
+// 		returnDoc := map[string]interface{}{
+// 			"description": "filter failed",
+// 			"status": 200,
+// 		}
+// 		c.IndentedJSON(http.StatusOK, returnDoc)
+// 		return
+// 	  } 
+
+// 	  students = append(students, result.Rows) 
+// 	}
+  
+// 	// Query by_name
+// 	if name != "" {
+// 	  result, err := database.DB.DesignDocs("_design/students").View("by_name", map[string]interface{}{
+// 		"name": name,
+// 		"filter": "name", 
+// 	  })
+// 	  if err != nil {
+// 		c.AbortWithError(500, err)
+// 		return 
+// 	  }
+// 	  students = append(students, result.Rows)
+// 	}
+  
+// 	// Return results
+// 	c.JSON(200, students)
+  
+//   }
