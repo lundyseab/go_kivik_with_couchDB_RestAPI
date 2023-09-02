@@ -15,12 +15,15 @@ func main() {
 	r.Use(cors.New(cors.Config{
 	  AllowOrigins: []string{"*"},
 	}))
-
-	// create group 
+	r.MaxMultipartMemory = 1024 * 1024
+	// create group
 	router := r.Group("/api/v1")
 
 	//add new student
-	router.POST("/insertDoc", v1.InsertDoc)
+	//api/v1/...
+	router.POST("/insert_student_doc", v1.InsertDoc)
+	router.POST("/upload_files", v1.UploadFile)
+	router.GET("/get_file/:id", v1.GetFileWithID)
 
 	r.Run("localhost:"+os.Getenv("PORT"))
 }

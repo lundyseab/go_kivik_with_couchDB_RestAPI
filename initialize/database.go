@@ -43,12 +43,9 @@ func ConnectToDB() *kivik.DB{
 	// connect to couchDB
 	client := ConnectCouchDB()
 
-	//create new database
-	// err := client.CreateDB(context.TODO(), "new_db")
-	// if err != nil {
-	// 	log.Println(err)
-	// }
-	// connect to database "new_db"
-	db := client.DB(context.TODO(), "new_db")
+	// create new database
+	client.CreateDB(context.TODO(), os.Getenv("DATABASE"))
+	// connect to database
+	db := client.DB(context.TODO(), os.Getenv("DATABASE"))
 	return db
 }
