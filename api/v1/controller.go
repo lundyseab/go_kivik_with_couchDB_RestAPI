@@ -30,12 +30,16 @@ func InsertDoc(ctx *gin.Context) {
 	if err != nil {
 		panic(err)
 	}
-	returnDoc := map[string]interface{}{
+	body := map[string]interface{}{
 		"docId": docID,
 		"rev":   rev,
 		"name": student.Name,
 		"age": student.Age,
 		"id": student.ID,
+		"classroom": student.Classroom,
+	}
+	returnDoc := map[string]interface{}{
+		"body": body,
 		"status": 200,
 	}
 	ctx.IndentedJSON(http.StatusOK, returnDoc)
@@ -81,6 +85,28 @@ func UploadFile(c *gin.Context){
   
 }
 
+//get document by id 
+func GetDocumentById(c *gin.Context){
+	id := c.Param("id")
+
+	var student interface{}
+
+	err := database.DB.Get(context.TODO(), id).ScanDoc(&student)
+	if err != nil {
+		returnDoc := map[string]interface{}{
+			"description": "document with ID: "+id +", is not found!",
+			"status": 200,
+		}
+		c.IndentedJSON(200, returnDoc)
+	}
+	returnDoc := map[string]interface{}{
+		"id" : id,
+		"body": student,
+		"status": 200,
+	}
+	c.IndentedJSON(200, returnDoc)
+}
+
 // get file with id
 func GetFileWithID(c *gin.Context){
 	id := c.Param("id")
@@ -92,7 +118,7 @@ func GetFileWithID(c *gin.Context){
 	err := client.Get(context.TODO(), id).ScanDoc(&doc)
 	if err != nil {
 		returnDoc := map[string]interface{}{
-			"description": "document with ID: "+id +", is not found!",
+			"description": "file with ID: "+id +", is not found!",
 			"status": 200,
 		}
 		c.IndentedJSON(200, returnDoc)
@@ -115,3 +141,42 @@ func GetFileWithID(c *gin.Context){
 	c.Data(200, "application/octet-stream", file)
 
 }
+
+func UpdateDocumentByIdAndRev(c *gin.Context){
+		id := c.Param("id")
+		// Document to update
+		var student models.Student
+
+		if err := c.BindJSON(&student); err != nil {
+			returnDoc := map[string]interface{}{
+				"description": "failed",
+				"status": 200,
+			}
+			c.IndentedJSON(http.StatusOK, returnDoc)
+		}
+	  
+		// Update document using Update()
+		rev, err := database.DB.Put(context.TODO(), id, student)
+		if err != nil {
+			returnDoc := map[string]interface{}{
+				"description": "failed to update student document",
+				"status": 200,
+			}
+			c.IndentedJSON(http.StatusOK, returnDoc)
+		}
+		student.Rev = rev
+
+		returnDoc := map[string]interface{}{
+			"body": student,
+			"status": 200,
+		}
+		c.IndentedJSON(http.StatusOK, returnDoc)
+
+}
+// func deleteById(id, rev string) {
+// 	newRev, err := DBCon.Delete(context.TODO(), id, rev)
+// 	if err != nil {
+// 	  panic(err)
+// 	}
+// 	fmt.Printf("The tombstone document has revision %s\n", newRev)
+//   }
